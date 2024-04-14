@@ -1,7 +1,7 @@
 package com.example.validacao.entities;
 
 public enum RoleName {
-	USUARIO_LOGADO,
+	USUARIO,
 	FUNCIONARIO,
 	ADMINSTRADOR
 }
