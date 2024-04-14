@@ -16,18 +16,18 @@ import com.example.validacao.services.UserService;
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
-	@Autowired
-	UserService userService;
-	
-	@PostMapping("/login")
-	public ResponseEntity<RecoveryJwtTokenDto> authentication(@RequestBody LoginUserDto loginUserDtot) {
-		RecoveryJwtTokenDto recoveryJwtTokenDto = userService.AuthenticateUser(loginUserDtot);
-		return  new ResponseEntity<>(recoveryJwtTokenDto, HttpStatus.OK);
-	}
-	
-	 @PostMapping
-	    public ResponseEntity<Void> createUser(@RequestBody CreateUserDto createUserDto) {
-	        userService.createUser(createUserDto);
-	        return new ResponseEntity<>(HttpStatus.CREATED);
-	    }
+  @Autowired
+  UserService userService;
+
+  @PostMapping("/login")
+  public ResponseEntity<RecoveryJwtTokenDto> authentication(@RequestBody LoginUserDto loginUserDtot) {
+    RecoveryJwtTokenDto recoveryJwtTokenDto = userService.AuthenticateUser(loginUserDtot);
+    return new ResponseEntity<>(recoveryJwtTokenDto, HttpStatus.OK);
+  }
+
+  @PostMapping
+  public ResponseEntity<Void> createUser(@RequestBody CreateUserDto createUserDto) {
+    userService.createUser(createUserDto);
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
 }

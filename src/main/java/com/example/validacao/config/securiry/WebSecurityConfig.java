@@ -18,60 +18,63 @@ import com.example.validacao.beans.UserAuthenticationFilter;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-	
-	@Autowired
-    private UserAuthenticationFilter userAuthenticationFilter;
-	
-	public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/users/login", 
-            "/users" 
-    };
-	
-	// Endpoints que requerem autenticação para serem acessados
-    public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-            "/users/test"
-    };
 
-    // Endpoints que só podem ser acessador por usuários com permissão de cliente
-    public static final String [] ENDPOINTS_CUSTOMER = {
-            "/users/test/customer"
-    };
+  @Autowired
+  private UserAuthenticationFilter userAuthenticationFilter;
 
-    // Endpoints que só podem ser acessador por usuários com permissão de administrador
-    public static final String [] ENDPOINTS_ADMIN = {
-            "/users/test/administrator"
-    };
+  public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
+      "/users/login",
+      "/users"
+  };
 
-    public static final String [] ENDPOINTS_FUNCIONARIO = {
-            "/users/teste/funcionario"
-    }
+  // Endpoints que requerem autenticação para serem acessados
+  public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
+      "/users/test"
+  };
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf().disable() // Desativa a proteção contra CSRF
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Configura a política de criação de sessão como stateless
-                .and().authorizeHttpRequests() // Habilita a autorização para as requisições HTTP
-                .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
-                .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-                .requestMatchers(ENDPOINTS_ADMIN).hasRole("ADMINISTRATOR") // Repare que não é necessário colocar "ROLE" antes do nome, como fizemos na definição das roles
-                .requestMatchers(ENDPOINTS_CUSTOMER).hasRole("USUARIO")
-                .requestMatchers(ENDPOINTS_FUNCIONARIO).hasRole("FUNCIONARIO")
-                .anyRequest().denyAll()
-                // Adiciona o filtro de autenticação de usuário que criamos, antes do filtro de segurança padrão do Spring Security
-                .and().addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
-	
-	
-	@Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+  // Endpoints que só podem ser acessador por usuários com permissão de cliente
+  public static final String[] ENDPOINTS_USUARIO = {
+      "/users/test/usuário"
+  };
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  // Endpoints que só podem ser acessador por usuários com permissão de
+  // administrador
+  public static final String[] ENDPOINTS_ADMIN = {
+      "/users/test/administrator"
+  };
 
-	
+  public static final String[] ENDPOINTS_FUNCIONARIO = {
+      "/users/teste/funcionario"
+  };
+
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    return httpSecurity.csrf().disable() // Desativa a proteção contra CSRF
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Configura a política de criação
+                                                                                    // de sessão como stateless
+        .and().authorizeHttpRequests() // Habilita a autorização para as requisições HTTP
+        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
+        .requestMatchers(ENDPOINTS_ADMIN).hasRole("ADMINISTRATOR") // Repare que não é necessário colocar "ROLE" antes
+        // do nome, como fizemos na definição das roles
+        .requestMatchers(ENDPOINTS_USUARIO).hasRole("USUARIO")
+        .requestMatchers(ENDPOINTS_FUNCIONARIO).hasRole("FUNCIONARIO")
+        .anyRequest().denyAll()
+        // Adiciona o filtro de autenticação de usuário que criamos, antes do filtro de
+        // segurança padrão do Spring Security
+        .and().addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+      throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
 }

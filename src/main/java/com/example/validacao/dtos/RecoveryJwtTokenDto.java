@@ -1,7 +1,9 @@
 package com.example.validacao.dtos;
 
+import java.util.Set;
+
 public record RecoveryJwtTokenDto(
-			String token
-		) {
+    String token,
+    Set<String> roles) {
 
 }
