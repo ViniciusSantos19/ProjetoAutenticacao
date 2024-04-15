@@ -2,7 +2,6 @@ package com.example.validacao.entities;
 
 import java.util.List;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,72 +12,64 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
 
-@Table(name = "users")
-@Entity(name = "user")
+@Entity(name = "users")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@JoinTable(name="users_roles",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name="role_id"))
-	private List<Role> roles;
-	
-	private String password;
-	
-	@Column(unique = true)
-	private String email;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-	
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+  @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+  private List<Role> roles;
 
+  private String password;
 
-	public User(String email, String senha, List<Role> roles) {
-		super();
-		this.roles = roles;
-		this.password = senha;
-		this.email = email;
-	}
+  @Column(unique = true)
+  private String email;
 
-	public User() {
-		super();
-	}
+  public User(String email, String senha, List<Role> roles) {
+    super();
+    this.roles = roles;
+    this.password = senha;
+    this.email = email;
+  }
 
-	public long getId() {
-		return id;
-	}
+  public User() {
+    super();
+  }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public List<Role> getRoles() {
-		return roles;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
-	}
+  public List<Role> getRoles() {
+    return roles;
+  }
 
-	public String getPassword() {
-		return password;
-	}
+  public void setRoles(List<Role> roles) {
+    this.roles = roles;
+  }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  public String getPassword() {
+    return password;
+  }
 
-	public String getEmail() {
-		return email;
-	}
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
 }

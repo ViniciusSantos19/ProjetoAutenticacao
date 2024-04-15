@@ -46,9 +46,8 @@ public class UserService {
         .map(GrantedAuthority::getAuthority)
         .collect(Collectors.toSet());
 
-    Long id = userDetailsImpl.getUserId();
-
-    return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetailsImpl), userRoles, id);
+    return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetailsImpl),
+        userRoles);
   }
 
   public void createUser(CreateUserDto createUserDto) {

@@ -25,7 +25,8 @@ public class WebSecurityConfig {
   public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
       "/api/v1/user/login",
       "/api/v1/user",
-      "/api/v1/user/cadastro"
+      "/api/v1/user/cadastro",
+      "/actuator/health"
   };
 
   @Bean
