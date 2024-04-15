@@ -25,7 +25,7 @@ public class UserController {
     return new ResponseEntity<>(recoveryJwtTokenDto, HttpStatus.OK);
   }
 
-  @PostMapping
+  @PostMapping("/cadastro")
   public ResponseEntity<Void> createUser(@RequestBody CreateUserDto createUserDto) {
     userService.createUser(createUserDto);
     return new ResponseEntity<>(HttpStatus.CREATED);

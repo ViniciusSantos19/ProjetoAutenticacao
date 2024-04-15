@@ -4,6 +4,7 @@ import java.util.Set;
 
 public record RecoveryJwtTokenDto(
     String token,
-    Set<String> roles) {
+    Set<String> roles,
+    Long id) {
 
 }
