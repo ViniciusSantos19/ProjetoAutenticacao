@@ -1,10 +1,17 @@
-# Use eclipse-temurin:21-jdk-alpine for Java 21
-FROM eclipse-temurin:21-jdk-alpine  
+FROM eclipse-temurin:21-jdk-alpine AS builder
 
-VOLUME /tmp
+WORKDIR /home/app
 
-ARG JAR_FILE
+COPY . /home/app/ProjetoAuth
 
-COPY ${JAR_FILE} app.jar
+RUN cd ProjetoAuth && ./gradlew clean build
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /home/app
+
+EXPOSE 8080
+
+COPY --from=builder /home/app/ProjetoAuth/target/*.jar app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
