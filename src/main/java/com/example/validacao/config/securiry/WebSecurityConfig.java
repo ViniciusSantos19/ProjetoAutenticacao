@@ -31,13 +31,15 @@ public class WebSecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-    return httpSecurity.csrf().disable() // Desativa a proteção contra CSRF
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Configura a política de criação
-                                                                                    // de sessão como stateless
-        .and().authorizeHttpRequests() // Habilita a autorização para as requisições HTTP
-        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
-        .anyRequest().denyAll()
-        .and().addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+    return httpSecurity
+        .csrf(csrf -> csrf.disable())
+        .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+
+            .anyRequest().authenticated())
         .build();
   }
 
